@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "ts-node-dev --respawn --transpile-only --env-file .env src/app.ts",
-    "test": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles --coverage",
     "buid": "tsc"
   },
   "author": "@vortiz-agropago",

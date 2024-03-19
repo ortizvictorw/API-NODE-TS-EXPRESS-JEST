@@ -1,20 +1,31 @@
 import { InitServerExpress } from './server';
-import { IOptions } from '../interface';
-import { running } from '../../types';
-import express from 'express';
+import { IOptionsExpress } from '../interface';
+import { Router } from 'express';
+import { running } from '../../../types';
+
+const mockRouter = jest.fn(() => ({
+    get: jest.fn(),
+    post: jest.fn(),
+    put: jest.fn(),
+    delete: jest.fn(),
+    use: jest.fn(),
+})) as unknown as jest.Mocked<Router>;
 
 jest.mock('express', () => ({
     __esModule: true,
     default: jest.fn(() => ({
+        Router: mockRouter,
         listen: jest.fn(),
+        use: jest.fn(),
     })),
 }));
 
 describe('InitServerExpress', () => {
     let server: running;
-    const options: IOptions = {
+    const options: IOptionsExpress = {
         hostname: 'localhost',
         port: 3001,
+        routes: mockRouter,
     };
 
     beforeEach(() => {
@@ -30,8 +41,8 @@ describe('InitServerExpress', () => {
     });
 
     it('should initialize the server', () => {
-        server.running();
         const appInstance = (server as InitServerExpress).getExpressApp();
+        server.running();
         expect(appInstance.listen).toHaveBeenCalledWith(options.port, options.hostname, expect.any(Function));
     });
 });
