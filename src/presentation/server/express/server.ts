@@ -9,7 +9,7 @@ export class InitServerExpress implements running {
     private readonly hostname: string;
     private readonly port: number;
     private readonly app = express();
-    private readonly routes : Router;
+    private readonly routes: Router;
 
     constructor({ hostname, port = 3001, routes }: IOptionsExpress) {
         this.port = port;
@@ -18,9 +18,12 @@ export class InitServerExpress implements running {
     }
 
     running() {
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(this.routes);
         this.app.listen(this.port, this.hostname, () => console.log(`Server running at http://${this.hostname}:${this.port}`));
-        this.app.use(this.routes)
     }
+    
 
     getExpressApp() {
         return this.app;

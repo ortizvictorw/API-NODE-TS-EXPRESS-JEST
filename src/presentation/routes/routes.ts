@@ -4,9 +4,9 @@ import { AuthRoutes } from "./auth/routes";
 export class AppRoutes {
 
     static get routes() {
-        const routes = Router()
-        routes.use('/api/auth/', AuthRoutes.routes)
-        return routes;
+        const router = Router()
+        router.use('/api/auth', AuthRoutes.routes)
+        return router;
     }
 
 }
